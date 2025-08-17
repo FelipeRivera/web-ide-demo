@@ -1,0 +1,54 @@
+// Alpes Partners - Dominios y Subdominios
+Domain AlpesPartners {
+  domainVisionStatement "Plataforma integral para gestionar partnerships (afiliados, influencers, lealtad y alianzas) con foco en tracking, pagos y cumplimiento."
+  
+  Subdomain AffiliateMarketing {
+    type = CORE_DOMAIN
+    domainVisionStatement "Automatiza la creación y gestión de programas de afiliación: reclutamiento, seguimiento de clics/ventas y comisiones."
+  }
+  Subdomain AlliancesPlatform {
+    type = CORE_DOMAIN
+    domainVisionStatement "Columna vertebral del ciclo de vida de relaciones comerciales, con contratos, pagos y auditoría."
+  }
+  Subdomain InfluencerMarketing {
+    type = SUPPORTING_DOMAIN
+    domainVisionStatement "Conecta marcas con creadores, gestiona campañas, contratos creativos y atribución de impacto."
+  }
+  Subdomain LoyaltyAdvocacy {
+    type = SUPPORTING_DOMAIN
+    domainVisionStatement "Programas de referidos con enlaces únicos, incentivos y seguimiento de conversiones."
+  }
+  Subdomain ContractsAndOnboarding {
+    type = SUPPORTING_DOMAIN
+    domainVisionStatement "Plantillas de términos (CPA/CPL/CPC), condiciones de atribución y alta de partners."
+  }
+  Subdomain TrackingAndAttribution {
+    type = SUPPORTING_DOMAIN
+    domainVisionStatement "Registro en tiempo real de clics/conversiones vía tags JS, píxeles o APIs; reglas de atribución."
+  }
+  Subdomain PayoutsAndCompliance {
+    type = SUPPORTING_DOMAIN
+    domainVisionStatement "Cálculo y pago automático de comisiones multi-moneda, antifraude y cumplimiento normativo."
+  }
+  Subdomain ReportingAndAnalytics {
+    type = SUPPORTING_DOMAIN
+    domainVisionStatement "Dashboards avanzados, análisis de contribución y ROI; KPIs por afiliado/campaña."
+  }
+  Subdomain MarketplaceAndRecruitment {
+    type = SUPPORTING_DOMAIN
+    domainVisionStatement "Descubrimiento y calificación de afiliados/influencers mediante marketplace interno y búsqueda avanzada."
+  }
+  // Genéricos
+  Subdomain IdentityAndAccess {
+    type = GENERIC_SUBDOMAIN
+    domainVisionStatement "Autenticación/autorización de usuarios internos y externos."
+  }
+  Subdomain Notifications {
+    type = GENERIC_SUBDOMAIN
+    domainVisionStatement "Correos, webhooks y mensajes al ecosistema."
+  }
+  Subdomain Billing {
+    type = GENERIC_SUBDOMAIN
+    domainVisionStatement "Facturación y conciliación contable externa."
+  }
+}

@@ -1,0 +1,168 @@
+// Alpes Partners - Dominios y Subdominios
+// Alpes Partners - Contextos acotados TO-BE (microservicios reactivos basados en eventos)
+
+Domain AlpesPartners {
+  domainVisionStatement "Plataforma integral para gestionar partnerships (afiliados, influencers, lealtad y alianzas) con foco en tracking, pagos y cumplimiento."
+  
+  Subdomain AffiliateMarketing {
+    type = CORE_DOMAIN
+    domainVisionStatement "Automatiza la creación y gestión de programas de afiliación: reclutamiento, seguimiento de clics/ventas y comisiones."
+  }
+  Subdomain AlliancesPlatform {
+    type = CORE_DOMAIN
+    domainVisionStatement "Columna vertebral del ciclo de vida de relaciones comerciales, con contratos, pagos y auditoría."
+  }
+  Subdomain InfluencerMarketing {
+    type = SUPPORTING_DOMAIN
+    domainVisionStatement "Conecta marcas con creadores, gestiona campañas, contratos creativos y atribución de impacto."
+  }
+  Subdomain LoyaltyAdvocacy {
+    type = SUPPORTING_DOMAIN
+    domainVisionStatement "Programas de referidos con enlaces únicos, incentivos y seguimiento de conversiones."
+  }
+  Subdomain ContractsAndOnboarding {
+    type = SUPPORTING_DOMAIN
+    domainVisionStatement "Plantillas de términos (CPA/CPL/CPC), condiciones de atribución y alta de partners."
+  }
+  Subdomain TrackingAndAttribution {
+    type = SUPPORTING_DOMAIN
+    domainVisionStatement "Registro en tiempo real de clics/conversiones vía tags JS, píxeles o APIs; reglas de atribución."
+  }
+  Subdomain PayoutsAndCompliance {
+    type = SUPPORTING_DOMAIN
+    domainVisionStatement "Cálculo y pago automático de comisiones multi-moneda, antifraude y cumplimiento normativo."
+  }
+  Subdomain ReportingAndAnalytics {
+    type = SUPPORTING_DOMAIN
+    domainVisionStatement "Dashboards avanzados, análisis de contribución y ROI; KPIs por afiliado/campaña."
+  }
+  Subdomain MarketplaceAndRecruitment {
+    type = SUPPORTING_DOMAIN
+    domainVisionStatement "Descubrimiento y calificación de afiliados/influencers mediante marketplace interno y búsqueda avanzada."
+  }
+  // Genéricos
+  Subdomain IdentityAndAccess {
+    type = GENERIC_SUBDOMAIN
+    domainVisionStatement "Autenticación/autorización de usuarios internos y externos."
+  }
+  Subdomain Notifications {
+    type = GENERIC_SUBDOMAIN
+    domainVisionStatement "Correos, webhooks y mensajes al ecosistema."
+  }
+  Subdomain Billing {
+    type = GENERIC_SUBDOMAIN
+    domainVisionStatement "Facturación y conciliación contable externa."
+  }
+}
+
+BoundedContext AffiliateProgram implements AffiliateMarketing, ContractsAndOnboarding {
+  type = FEATURE
+  domainVisionStatement "Programas de afiliados, reglas de comisión y ciclo de vida del afiliado dentro de un programa"
+}
+
+BoundedContext TrackingAttribution implements TrackingAndAttribution {
+  type = FEATURE
+  domainVisionStatement "Captura de clics/conversiones (JS/píxeles/API), ventanas de atribución y modelos"
+}
+
+BoundedContext PayoutsCompliance implements PayoutsAndCompliance, Billing {
+  type = FEATURE
+  domainVisionStatement "Cálculo, aprobación y ejecución de pagos; antifraude y cumplimiento; conciliación/facturación"
+}
+
+BoundedContext ReportingAnalytics implements ReportingAndAnalytics {
+  type = FEATURE
+  domainVisionStatement "Cuadros de mando/ROI, proyecciones y vistas materializadas"
+}
+
+BoundedContext ContractsOnboarding implements ContractsAndOnboarding {
+  type = FEATURE
+  domainVisionStatement "Plantillas y contratos CPA/CPL/CPC; acuerdos de atribución/cookies; KYC básico"
+}
+
+BoundedContext PartnerLifecycle implements AlliancesPlatform {
+  type = FEATURE
+  domainVisionStatement "Incorporación/desincorporación de socios, perfiles, acuerdos, KYC/validaciones"
+}
+
+BoundedContext MarketplaceRecruitment implements MarketplaceAndRecruitment {
+  type = FEATURE
+  domainVisionStatement "Descubrimiento, puntuación y emparejamiento de socios (afiliados/influencers/medios)"
+}
+
+BoundedContext InfluencerCampaigns implements InfluencerMarketing {
+  type = FEATURE
+  domainVisionStatement "Gestión de campañas de creadores, informes, contratos creativos, seguimiento de publicaciones"
+}
+
+BoundedContext LoyaltyAdvocacy implements LoyaltyAdvocacy {
+  type = FEATURE
+  domainVisionStatement "Programas de recomendación de clientes/empleados con enlaces e incentivos únicos"
+}
+
+BoundedContext IAM implements IdentityAndAccess {
+  type = FEATURE
+  domainVisionStatement "Autenticación/autorización centralizada"
+}
+
+BoundedContext Notifications implements Notifications {
+  type = FEATURE
+  domainVisionStatement "Correos electrónicos, webhooks y mensajes del ecosistema"
+}
+
+// Infrastructure systems
+BoundedContext EventBus {
+  type = FEATURE
+  domainVisionStatement "Kafka/PubSub (solo mensajería)"
+}
+
+ContextMap AlpesPartnersTOBE {
+  state = TO_BE
+
+  contains AffiliateProgram
+  contains TrackingAttribution
+  contains PayoutsCompliance
+  contains ReportingAnalytics
+  contains ContractsOnboarding
+  contains PartnerLifecycle
+  contains MarketplaceRecruitment
+  contains InfluencerCampaigns
+  contains LoyaltyAdvocacy
+  contains IAM
+  contains Notifications
+  contains EventBus
+
+  // Flujo principal de un afiliado: El afiliado toma un programa, se toman estadísticas, se generan posibles contratos o pagos
+  TrackingAttribution [D] <- [U] AffiliateProgram
+  ReportingAnalytics  [D] <- [U] TrackingAttribution
+  PayoutsCompliance   [D] <- [U] ContractsOnboarding
+  ReportingAnalytics  [D] <- [U] PayoutsCompliance
+
+  // Se recluta un aliado para que haga parte de un programa
+  PartnerLifecycle    [D] <- [U] MarketplaceRecruitment
+  AffiliateProgram    [D] <- [U] PartnerLifecycle
+
+  // Flujo de influencers y referidos
+  InfluencerCampaigns [D] <- [U] PartnerLifecycle
+  LoyaltyAdvocacy     [D] <- [U] PartnerLifecycle
+  ReportingAnalytics  [D] <- [U] InfluencerCampaigns
+  ReportingAnalytics  [D] <- [U] LoyaltyAdvocacy
+
+  // Flujo de identificación
+  AffiliateProgram    [D] <- [U] IAM
+  TrackingAttribution [D] <- [U] IAM
+  InfluencerCampaigns [D] <- [U] IAM
+  LoyaltyAdvocacy     [D] <- [U] IAM
+
+  // Flujo de notificaciones
+  Notifications       [D] <- [U] AffiliateProgram
+  Notifications       [D] <- [U] InfluencerCampaigns
+  Notifications       [D] <- [U] LoyaltyAdvocacy
+  Notifications       [D] <- [U] PayoutsCompliance
+
+  // Flujo de eventos (Event driven)
+  TrackingAttribution [D] <- [U] EventBus
+  ReportingAnalytics  [D] <- [U] EventBus
+  PayoutsCompliance   [D] <- [U] EventBus
+  AffiliateProgram    [D] <- [U] EventBus
+}

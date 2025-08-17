@@ -1,0 +1,37 @@
+// Alpes Partners - Contextos acotados AS-IS (Monolito)
+
+BoundedContext APMonolith {
+  type = FEATURE
+  domainVisionStatement "Sistema monolítico que agrupa afiliados, influencers, lealtad, contratos, tracking, pagos y reportes."
+}
+
+BoundedContext PaymentProvider {
+  type = SYSTEM
+  domainVisionStatement "Pasarelas de pago externas usadas para procesar comisiones."
+  implementationTechnology "External"
+}
+
+BoundedContext SocialNetworks {
+  type = SYSTEM
+  domainVisionStatement "APIs de redes sociales usadas por campañas de creadores."
+  implementationTechnology "External"
+}
+
+BoundedContext AdvertisersEcommerce {
+  type = SYSTEM
+  domainVisionStatement "Sistemas de marcas/anunciantes que envían eventos de checkout/capturan tags."
+  implementationTechnology "External"
+}
+
+ContextMap AlpesPartnersASIS {
+  state = AS_IS
+
+  contains APMonolith
+  contains PaymentProvider
+  contains SocialNetworks
+  contains AdvertisersEcommerce
+
+  AdvertisersEcommerce [U] -> [D] APMonolith
+  SocialNetworks [U] -> [D] APMonolith
+  APMonolith [U] -> [D] PaymentProvider
+}
